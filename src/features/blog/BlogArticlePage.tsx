@@ -9,7 +9,7 @@ import { Loading } from '../../common/components/Loading';
 
 class BlogPage extends React.Component<RouteComponentProps<any> & StateProps & DispatchProps> {
   componentDidMount() {
-    const { id } = this.props.match.params;
+    const { match: { params: { id } } } = this.props;
     this.props.fetch(id);
   }
 

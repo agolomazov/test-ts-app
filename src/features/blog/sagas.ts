@@ -1,5 +1,6 @@
-import { call, all, takeEvery, put, delay } from 'redux-saga/effects';
+import { call, all, takeEvery, put } from 'redux-saga/effects';
 import { AxiosResponse } from 'axios';
+import { push } from 'connected-react-router';
 import {
   FETCH_POSTS,
   FETCH_CURRENT_POST,
@@ -30,9 +31,14 @@ function* fetchAllPost() {
 function* fetchCurrentSaga(action: Action) {
   const { payload } = action;
   try {
-    const { data }: AxiosResponse = yield call(fetchCurrentPost, payload);
-    yield put(fetchCurrentSuccess(data));
+    if (payload === '1') {
+      yield put(push('/'));
+    } else {
+      const { data }: AxiosResponse = yield call(fetchCurrentPost, payload);
+      yield put(fetchCurrentSuccess(data));
+    }
   } catch (error) {
-    yield put(fetchCurrentFail());
+    console.log('[error]', error.message);
+    yield put(push('/404'));
   }
 }
